@@ -17,6 +17,20 @@ export default class NewBill {
   }
   handleChangeFile = e => {
     e.preventDefault()
+    let ext = this.document.querySelector(`input[data-testid="file"]`).value.match(/\.([^\.]+)$/)[1];
+    console.log(ext)
+    switch (ext) {
+      case 'JPG':
+      case 'PNG':
+      case 'JPEG':
+      case 'jpg':
+      case 'png':
+      case 'jpeg':
+        break;
+      default:
+        alert('Le fichier doit être un .JPG, un .PNG ou un .JPEG.');
+        this.document.querySelector(`input[data-testid="file"]`).value = '';
+    }
     const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
@@ -24,6 +38,7 @@ export default class NewBill {
     const email = JSON.parse(localStorage.getItem("user")).email
     formData.append('file', file)
     formData.append('email', email)
+    localStorage.clear();
 
     this.store
       .bills()
