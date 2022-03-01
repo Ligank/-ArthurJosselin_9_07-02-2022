@@ -40,7 +40,7 @@ describe("Given I am connected as an employee", () => {
   })
 
   describe("When I click on an eye", () => {
-    test("Then the image of the bill is shown", () => {
+    test("Then the image of the bill should be shown", () => {
       document.body.innerHTML = BillsUI({ data: bills })
       const Bill = new Bills({
         document, onNavigate, store: null, localStorage
