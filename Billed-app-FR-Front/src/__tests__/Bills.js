@@ -45,12 +45,12 @@ describe("Given I am connected as an employee", () => {
       const Bill = new Bills({
         document, onNavigate, store: null, localStorage
       })
-      const handleClickIconEye = jest.fn((e) => Bill.handleClickIconEye(e))
+      const handleClickIconEye = jest.fn((e) => Bill.handleClickIconEye(eyes[0]))
       let eyes = document.querySelectorAll(`div[data-testid="icon-eye"]`);
 
       eyes.forEach(eye => {
         eye.addEventListener('click', handleClickIconEye)
-        userEvent.click(eye)
+        userEvent.click(eyes[0])
       })
       
       expect(handleClickIconEye).toHaveBeenCalled();

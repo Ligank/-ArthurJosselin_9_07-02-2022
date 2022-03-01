@@ -16,21 +16,30 @@ export default class NewBill {
     new Logout({ document, localStorage, onNavigate })
   }
   handleChangeFile = e => {
-    e.preventDefault()
-    let ext = this.document.querySelector(`input[data-testid="file"]`).value.match(/\.([^\.]+)$/)[1];
-    switch (ext) {
-      case 'JPG':
-      case 'PNG':
-      case 'JPEG':
-      case 'jpg':
-      case 'png':
-      case 'jpeg':
-        break;
-      default:
-        alert('Le fichier doit être un .JPG, un .PNG ou un .JPEG.');
-        this.document.querySelector(`input[data-testid="file"]`).value = '';
+    //e.preventDefault()
+    //let ext = this.document.querySelector(`input[data-testid="file"]`).value.match(/\.([^\.]+)$/)[1];
+    let image;
+    verification();
+    function verification() {
+      let ext = document.createElement("img");
+      ext.src = "Images/test.gif";
+      switch (ext) {
+        case 'JPG':
+        case 'PNG':
+        case 'JPEG':
+        case 'jpg':
+        case 'png':
+        case 'jpeg':
+          image = true;
+          break;
+        default:
+          alert('Le fichier doit être un .JPG, un .PNG ou un .JPEG.');
+          //this.document.querySelector(`input[data-testid="file"]`).value = '';
+          image = false;
+      }
     }
-    const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
+    if (image == true) {
+      const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
     const filePath = e.target.value.split(/\\/g)
     const fileName = filePath[filePath.length-1]
     const formData = new FormData()
@@ -51,6 +60,8 @@ export default class NewBill {
         this.fileUrl = fileUrl
         this.fileName = fileName
       }).catch(error => console.error(error))
+    }
+    
   }
   handleSubmit = e => {
     e.preventDefault()

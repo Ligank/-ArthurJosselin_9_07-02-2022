@@ -103,7 +103,7 @@ export default class {
         <div id="big-billed-icon" data-testid="big-billed-icon"> ${BigBilledIcon} </div>
       `)
       $('.vertical-navbar').css({ height: '120vh' })
-      this.counter = 2
+      this.counter ++
     }
     console.log(this.counter)
     $('#icon-eye-d').click(this.handleClickIconEye)
