@@ -18,7 +18,6 @@ export default class NewBill {
   handleChangeFile = e => {
     e.preventDefault()
     let ext = this.document.querySelector(`input[data-testid="file"]`).value.match(/\.([^\.]+)$/)[1];
-    console.log(ext)
     switch (ext) {
       case 'JPG':
       case 'PNG':
@@ -38,7 +37,6 @@ export default class NewBill {
     const email = JSON.parse(localStorage.getItem("user")).email
     formData.append('file', file)
     formData.append('email', email)
-    localStorage.clear();
 
     this.store
       .bills()
@@ -49,7 +47,6 @@ export default class NewBill {
         }
       })
       .then(({fileUrl, key}) => {
-        console.log(fileUrl)
         this.billId = key
         this.fileUrl = fileUrl
         this.fileName = fileName

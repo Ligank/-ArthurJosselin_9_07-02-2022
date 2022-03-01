@@ -7,6 +7,8 @@ import BillsUI from "../views/BillsUI.js"
 import { bills } from "../fixtures/bills.js"
 import { ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
+import Bills from "../containers/Dashboard.js"
+import userEvent from '@testing-library/user-event'
 
 import router from "../app/Router.js";
 
@@ -34,6 +36,25 @@ describe("Given I am connected as an employee", () => {
       const antiChrono = (a, b) => ((a < b) ? 1 : -1)
       const datesSorted = [...dates].sort(antiChrono)
       expect(dates).toEqual(datesSorted)
+    })
+  })
+
+  describe("When I click on an eye", () => {
+    test("Then the image of the bill is shown", () => {
+      document.body.innerHTML = BillsUI({ data: bills })
+      const Bill = new Bills({
+        document, onNavigate, store: null, localStorage
+      })
+      const handleClickIconEye = jest.fn((e) => Bill.handleClickIconEye(e))
+      let eyes = document.querySelectorAll(`div[data-testid="icon-eye"]`);
+
+      eyes.forEach(eye => {
+        eye.addEventListener('click', handleClickIconEye)
+        userEvent.click(eye)
+      })
+      
+      expect(handleClickIconEye).toHaveBeenCalled();
+     
     })
   })
 })
