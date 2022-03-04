@@ -1,6 +1,8 @@
 import { ROUTES_PATH } from '../constants/routes.js'
 import Logout from "./Logout.js"
 
+export let image;
+
 export default class NewBill {
   constructor({ document, onNavigate, store, localStorage }) {
     this.document = document
@@ -18,11 +20,10 @@ export default class NewBill {
   handleChangeFile = e => {
     //e.preventDefault()
     //let ext = this.document.querySelector(`input[data-testid="file"]`).value.match(/\.([^\.]+)$/)[1];
-    let image;
+    let ext = document.createElement("img");
+    ext.src = "Images/test.gif";
     verification();
     function verification() {
-      let ext = document.createElement("img");
-      ext.src = "Images/test.gif";
       switch (ext) {
         case 'JPG':
         case 'PNG':

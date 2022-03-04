@@ -4,6 +4,7 @@
 
 import {screen, waitFor} from "@testing-library/dom"
 import BillsUI from "../views/BillsUI.js"
+import NewBillUI from "../views/NewBillUI.js"
 import { bills } from "../fixtures/bills.js"
 import { ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
@@ -66,11 +67,12 @@ describe("Given I am connected as an employee", () => {
       const Bill = new Bills({
         document, onNavigate, store: null, localStorage
       })
-      //const handleClickNewBill = jest.fn((e) => Bill.handleClickNewBill())
+      const handleClickNewBill = jest.fn((e) => Bill.handleClickNewBill(e))
       const buttonNewBill = document.querySelector(`button[data-testid="btn-new-bill"]`)
+      buttonNewBill.addEventListener('click', handleClickNewBill)
       buttonNewBill.click()
 
-      expect(Bill.handleClickNewBill()).toHaveBeenCalled();
+      expect(handleClickNewBill).toHaveBeenCalled();
       await waitFor(() => document.querySelector(`form[data-testid="form-new-bill"]`))
       expect(document.querySelector("form-newbill-container content-inner")).toBeTruthy();
      
