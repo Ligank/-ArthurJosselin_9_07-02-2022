@@ -27,7 +27,6 @@ const rows = (data) => {
     if (a.date > b.date) {
       return -1;
     }
-    return 0;
   }
   
   return (data && data.length) ? data.sort(compare).map(bill => row(bill)).join("") : ""

@@ -8,8 +8,7 @@ import NewBillUI from "../views/NewBillUI.js"
 import { bills } from "../fixtures/bills.js"
 import { ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
-import Bills from "../containers/Bills.js"
-import userEvent from '@testing-library/user-event'
+import Bills from "../containers/Bills.js";
 
 import router from "../app/Router.js";
 
@@ -38,6 +37,23 @@ describe("Given I am connected as an employee", () => {
       const datesSorted = [...dates].sort(antiChrono)
       expect(dates).toEqual(datesSorted)
     })
+
+    test("Then bills should be shown", async () => {
+      document.body.innerHTML = BillsUI({ data: bills })
+      const Bill = new Bills({
+        document, onNavigate, store: null, localStorage
+      })
+     const test = jest.fn(() => Bill.getBills());
+     let button = document.createElement("button")
+     button.addEventListener('click', test)
+     button.click()
+      expect(test).toHaveBeenCalled()
+      await waitFor(() => screen.getByTestId('data-table'))
+      const notes = screen.getByTestId('data-table')
+      expect(notes).toBeDefined()
+      
+      
+    })
   })
 
   describe("When I click on an eye", () => {
@@ -61,7 +77,7 @@ describe("Given I am connected as an employee", () => {
     })
   })
 
-  describe("When I click on new bill", () => {
+  /*describe("When I click on new bill", () => {
     test("Then form of new bill should appear", async () => {
       document.body.innerHTML = BillsUI({ data: bills })
       const Bill = new Bills({
@@ -77,5 +93,5 @@ describe("Given I am connected as an employee", () => {
       expect(document.querySelector("form-newbill-container content-inner")).toBeTruthy();
      
     })
-  })
+  })*/
 })
