@@ -9,6 +9,7 @@ import { bills } from "../fixtures/bills.js"
 import { ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
 import Bills from "../containers/Bills.js";
+import store from "../__mocks__/store.js";
 
 import router from "../app/Router.js";
 
@@ -41,7 +42,7 @@ describe("Given I am connected as an employee", () => {
     test("Then bills should be shown", async () => {
       document.body.innerHTML = BillsUI({ data: bills })
       const Bill = new Bills({
-        document, onNavigate, store: null, localStorage
+        document, onNavigate, store, localStorage
       })
      const test = jest.fn(() => Bill.getBills());
      let button = document.createElement("button")
@@ -81,7 +82,7 @@ describe("Given I am connected as an employee", () => {
     test("Then form of new bill should appear", async () => {
       document.body.innerHTML = BillsUI({ data: bills })
       const Bill = new Bills({
-        document, onNavigate, store: null, localStorage
+        document, onNavigate, store, localStorage
       })
       const handleClickNewBill = jest.fn((e) => Bill.handleClickNewBill(e))
       const buttonNewBill = document.querySelector(`button[data-testid="btn-new-bill"]`)

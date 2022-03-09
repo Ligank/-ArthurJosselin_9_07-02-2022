@@ -1,8 +1,6 @@
 import { ROUTES_PATH } from '../constants/routes.js'
 import Logout from "./Logout.js"
 
-export let image;
-
 export default class NewBill {
   constructor({ document, onNavigate, store, localStorage }) {
     this.document = document
@@ -18,51 +16,45 @@ export default class NewBill {
     new Logout({ document, localStorage, onNavigate })
   }
   handleChangeFile = e => {
-    //e.preventDefault()
-    //let ext = this.document.querySelector(`input[data-testid="file"]`).value.match(/\.([^\.]+)$/)[1];
-    let ext = document.createElement("img");
-    ext.src = "Images/test.gif";
-    verification();
-    function verification() {
-      switch (ext) {
-        case 'JPG':
-        case 'PNG':
-        case 'JPEG':
-        case 'jpg':
-        case 'png':
-        case 'jpeg':
-          image = true;
-          break;
-        default:
-          alert('Le fichier doit être un .JPG, un .PNG ou un .JPEG.');
-          //this.document.querySelector(`input[data-testid="file"]`).value = '';
-          image = false;
-      }
+    e.preventDefault()
+    const file = this.document.querySelector(`input[data-testid="file"]`).files[0];
+    switch (file.type) {
+      case 'image/JPG':
+      case 'image/PNG':
+      case 'image/JPEG':
+      case 'image/jpg':
+      case 'image/png':
+      case 'image/jpeg':
+        break;
+      default:
+        alert('Le fichier doit être un .JPG, un .PNG ou un .JPEG.');
+        document.querySelector(`input[data-testid="file"]`).value = '';
     }
-    if (image == true) {
-      const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
-      const filePath = e.target.value.split(/\\/g)
-      const fileName = filePath[filePath.length-1]
-      const formData = new FormData()
+    const filePath = e.target.value.split(/\\/g)
+    const fileName = filePath[filePath.length-1]
+    const formData = new FormData()
+    if (!JSON.parse(localStorage.getItem("user"))) {
+      const email = "employee@test.tld"
+      formData.append('file', file)
+      formData.append('email', email)
+    } else {
       const email = JSON.parse(localStorage.getItem("user")).email
       formData.append('file', file)
       formData.append('email', email)
-
-      this.store
-        .bills()
-        .create({
-          data: formData,
-          headers: {
-            noContentType: true
-          }
-        })
-        .then(({fileUrl, key}) => {
-          this.billId = key
-          this.fileUrl = fileUrl
-          this.fileName = fileName
-        }).catch(error => console.error(error))
     }
-    
+    this.store
+      .bills()
+      .create({
+        data: formData,
+        headers: {
+          noContentType: true
+        }
+      })
+      .then(({fileUrl, key}) => {
+        this.billId = key
+        this.fileUrl = fileUrl
+        this.fileName = fileName
+      }).catch(error => console.error(error)) 
   }
   handleSubmit = e => {
     e.preventDefault()
