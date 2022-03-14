@@ -59,7 +59,12 @@ export default class NewBill {
   handleSubmit = e => {
     e.preventDefault()
     console.log('e.target.querySelector(`input[data-testid="datepicker"]`).value', e.target.querySelector(`input[data-testid="datepicker"]`).value)
-    const email = JSON.parse(localStorage.getItem("user")).email
+    let email;
+    if (!JSON.parse(localStorage.getItem("user"))) {
+      email = "employee@test.tld"
+    } else {
+      email = JSON.parse(localStorage.getItem("user")).email
+    }
     const bill = {
       email,
       type: e.target.querySelector(`select[data-testid="expense-type"]`).value,

@@ -53,7 +53,6 @@ describe("Given I am connected as an employee", () => {
       const notes = screen.getByTestId('data-table')
       expect(notes).toBeDefined()
       
-      
     })
   })
 
@@ -78,7 +77,7 @@ describe("Given I am connected as an employee", () => {
     })
   })
 
-  /*describe("When I click on new bill", () => {
+  describe("When I click on new bill", () => {
     test("Then form of new bill should appear", async () => {
       document.body.innerHTML = BillsUI({ data: bills })
       const Bill = new Bills({
@@ -94,5 +93,5 @@ describe("Given I am connected as an employee", () => {
       expect(document.querySelector("form-newbill-container content-inner")).toBeTruthy();
      
     })
-  })*/
+  })
 })

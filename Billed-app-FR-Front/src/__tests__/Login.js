@@ -109,7 +109,11 @@ describe("Given that I am a user on login page", () => {
           status: "connected",
         })
       );
+
+      const createUser = jest.fn(login.createUser);
+      expect(createUser).toHaveBeenCalled();
     });
+
 
     test("It should renders Bills page", () => {
       expect(screen.getAllByText("Mes notes de frais")).toBeTruthy();
