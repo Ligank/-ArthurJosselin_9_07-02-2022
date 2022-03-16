@@ -4,7 +4,6 @@
 
 import {screen, waitFor} from "@testing-library/dom"
 import BillsUI from "../views/BillsUI.js"
-import NewBillUI from "../views/NewBillUI.js"
 import { bills } from "../fixtures/bills.js"
 import { ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
@@ -40,7 +39,11 @@ describe("Given I am connected as an employee", () => {
     })
 
     test("Then bills should be shown", async () => {
-      document.body.innerHTML = BillsUI({ data: bills })
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+      window.localStorage.setItem('user', JSON.stringify({
+        type: 'Employee'
+      }))
+      document.body.innerHTML = BillsUI({ data: bills})
       const Bill = new Bills({
         document, onNavigate, store, localStorage
       })
@@ -49,8 +52,8 @@ describe("Given I am connected as an employee", () => {
      button.addEventListener('click', test)
      button.click()
       expect(test).toHaveBeenCalled()
-      await waitFor(() => screen.getByTestId('data-table'))
-      const notes = screen.getByTestId('data-table')
+      await waitFor(() => document.querySelector("#data-table"))
+      const notes = document.querySelector("#data-table")
       expect(notes).toBeDefined()
       
     })
@@ -58,6 +61,7 @@ describe("Given I am connected as an employee", () => {
 
   describe("When I click on an eye", () => {
     test("Then the image of the bill should be shown", async () => {
+      $.fn.modal = jest.fn();
       document.body.innerHTML = BillsUI({ data: bills })
       const Bill = new Bills({
         document, onNavigate, store: null, localStorage
@@ -73,24 +77,6 @@ describe("Given I am connected as an employee", () => {
       expect(handleClickIconEye).toHaveBeenCalled();
       await waitFor(() => document.querySelector(".bill-proof-container"))
       expect(document.querySelector(".bill-proof-container")).toBeTruthy();
-     
-    })
-  })
-
-  describe("When I click on new bill", () => {
-    test("Then form of new bill should appear", async () => {
-      document.body.innerHTML = BillsUI({ data: bills })
-      const Bill = new Bills({
-        document, onNavigate, store, localStorage
-      })
-      const handleClickNewBill = jest.fn((e) => Bill.handleClickNewBill(e))
-      const buttonNewBill = document.querySelector(`button[data-testid="btn-new-bill"]`)
-      buttonNewBill.addEventListener('click', handleClickNewBill)
-      buttonNewBill.click()
-
-      expect(handleClickNewBill).toHaveBeenCalled();
-      await waitFor(() => document.querySelector(`form[data-testid="form-new-bill"]`))
-      expect(document.querySelector("form-newbill-container content-inner")).toBeTruthy();
      
     })
   })

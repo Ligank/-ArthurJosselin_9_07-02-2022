@@ -109,9 +109,6 @@ describe("Given that I am a user on login page", () => {
           status: "connected",
         })
       );
-
-      const createUser = jest.fn(login.createUser);
-      expect(createUser).toHaveBeenCalled();
     });
 
 

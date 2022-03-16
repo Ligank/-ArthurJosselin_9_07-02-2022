@@ -5,6 +5,8 @@ export let PREVIOUS_LOCATION = ''
 // we use a class so as to test its methods in e2e tests
 export default class Login {
   constructor({ document, localStorage, onNavigate, PREVIOUS_LOCATION, store }) {
+    this.login();
+    this.createUser();
     this.document = document
     this.localStorage = localStorage
     this.onNavigate = onNavigate
