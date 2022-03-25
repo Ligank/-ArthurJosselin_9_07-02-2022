@@ -81,3 +81,36 @@ describe("Given I am connected as an employee", () => {
     })
   })
 })
+
+
+// test d'integration GET 404 et 500
+describe("Given I am connected as an employee", () => {
+  describe("When I am on Bills Page", () => {
+    test("Then, fetches bills from mock API GET", async () => {
+      const getSpy = jest.spyOn(store, "get");
+      const bills = await store.get();
+      expect(getSpy).toHaveBeenCalledTimes(1);
+      expect(bills.data.length).toBe(4);
+
+    })
+
+    test("Then, fetches bills from an API and fails with 404 messages error", async () => {
+      store.get.mockImplementationOnce(() => Promise.reject(new Error("erreur 404")));
+      const html = BillsUI({ error: "Erreur 404" });
+      document.body.innerHTML = html;
+      const message = await screen.getByText(/Erreur 404/);
+      expect(message).toBeTruthy();
+
+    })
+
+    test("Then, fetches message from an API and fails with 500 messages error", async () => {
+      store.get.mockImplementationOnce(() => Promise.reject(new Error("erreur 404")));
+      const html = BillsUI({ error: "Erreur 500" });
+      document.body.innerHTML = html;
+      const message = await screen.getByText(/Erreur 500/);
+      expect(message).toBeTruthy();
+
+    })
+    
+  })
+})
